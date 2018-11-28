@@ -21,16 +21,16 @@
 		
 		var texture, lightsource1, lightsource2, lightsource3, controls; 
 		
-		var folder = "Fabric";
-		var textureName = "hexfabric"
+		var folder = "Nature";
+		var textureName = "general bush"
 		
 		var settings = {
 				metalness: .5,
 				roughness: 0.4,
 				ambientIntensity: 0.2,
-				aoMapIntensity: 1.0,
+				aoMapIntensity: .5,
 				envMapIntensity: 1.0,
-				displacementScale: 2.436143, // from original model
+				displacementScale: 1, // from original model
 				normalScale: 1.0
 		};
 		
@@ -42,9 +42,20 @@ function init() {
 	// Load a texture
 	
 	texture = new THREE.TextureLoader().load( folder+"_LiveNormal/"+ textureName+ "_Albedo.png" );
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	
 	var displacementMap = new THREE.TextureLoader().load(folder+"_LiveNormal/"+ textureName+ "_Height.png");
-	var aoMap = new THREE.TextureLoader().load(folder+"_LiveNormal/"+ textureName+ "_Height.png");
+	displacementMap.wrapS = THREE.RepeatWrapping;
+	displacementMap.wrapT = THREE.RepeatWrapping;
+	
+	var aoMap = new THREE.TextureLoader().load(folder+"_LiveNormal/"+ textureName+ "_Metallic.png");
+	aoMap.wrapS = THREE.RepeatWrapping;
+	aoMap.wrapT = THREE.RepeatWrapping;
+	
 	var normalMap = new THREE.TextureLoader().load(folder+"_LiveNormal/"+ textureName+ "_Normal.png");
+	normalMap.wrapS = THREE.RepeatWrapping;
+	normalMap.wrapT = THREE.RepeatWrapping;
 	
 	// env map
 	var path = "textures/cube/SwedishRoyalCastle/";
@@ -83,11 +94,12 @@ function init() {
 			aoMapIntensity: 1,
 			displacementMap: displacementMap,
 			displacementScale: settings.displacementScale,
-			displacementBias: - 0.428408, // from original model
+			displacementBias: - 1, // from original model
 			envMap: reflectionCube,
 			envMapIntensity: settings.envMapIntensity,
 			side: THREE.DoubleSide
 		} );
+		material.map.magFilter = THREE.NearestFilter;
 	}
 	
 	// Combine the geometry and material into a mesh
@@ -103,7 +115,7 @@ function init() {
 	// Set the position to 4, 4, 4
 	lightsource1.position.set( 20,10,10 );
 	lightsource2.position.set( -20,10,10 );
-	lightsource3.position.set( 0,-200,100 );
+	lightsource3.position.set( 0,-20,50 );
 	
 	//Make Ambient Light
 	var ambientLight = new THREE.AmbientLight( 0xffffff, settings.ambientIntensity );
@@ -152,6 +164,8 @@ function animate() {
 	//mesh.rotation.x += 0.03;
 	// Rotate the y position of the mesh by 0.02
 	mesh.rotation.z += 0.02;
+	
+	mesh.material.map.offset.y += .02;
 	// Render everything using the created renderer, scene, and camera
 	renderer.render( scene, camera );
 }
