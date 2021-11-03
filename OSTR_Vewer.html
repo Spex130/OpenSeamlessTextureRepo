@@ -14,6 +14,7 @@
 		}
 	</style>
 </head>
+<!---->
 <body>	
 	<script>
 		
@@ -22,7 +23,7 @@
 		var texture, lightsource1, lightsource2, lightsource3, controls; 
 		
 		var folder = "Nature";
-		var textureName = "general bush"
+		var textureName = "FullMoss"
 		
 		var settings = {
 				metalness: .5,
@@ -34,7 +35,7 @@
 				normalScale: 1.0
 		};
 		
-		var basicMat = false;
+		var basicMat = true;
 		
 function init() {
 	
@@ -42,6 +43,7 @@ function init() {
 	// Load a texture
 	
 	texture = new THREE.TextureLoader().load( folder+"_LiveNormal/"+ textureName+ "_Albedo.png" );
+	//texture = new THREE.TextureLoader().Load("Nature_LiveNormal/FullMoss_Albedo.png");
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
 	
@@ -57,16 +59,17 @@ function init() {
 	normalMap.wrapS = THREE.RepeatWrapping;
 	normalMap.wrapT = THREE.RepeatWrapping;
 	
+	/*
 	// env map
-	var path = "textures/cube/SwedishRoyalCastle/";
-	var format = '.jpg';
+	var path = ( folder+"_LiveNormal/"+ textureName+ "_Albedo.png");
+	var format = '.png';
 	var urls = [
 	path + 'px' + format, path + 'nx' + format,
 	path + 'py' + format, path + 'ny' + format,
 	path + 'pz' + format, path + 'nz' + format
-	];
+	];//*/
 	
-	var reflectionCube = new THREE.CubeTextureLoader().load( urls );
+	//var reflectionCube = new THREE.CubeTextureLoader().load( urls );
 	
 	// Create a scene
 	scene = new THREE.Scene();
@@ -85,7 +88,7 @@ function init() {
 	else{
 		material = new THREE.MeshStandardMaterial( {
 			map: texture,
-			//color: 0x888888,
+			color: 0x888888,
 			roughness: settings.roughness,
 			metalness: settings.metalness,
 			normalMap: normalMap,
@@ -95,8 +98,10 @@ function init() {
 			displacementMap: displacementMap,
 			displacementScale: settings.displacementScale,
 			displacementBias: - 1, // from original model
-			envMap: reflectionCube,
+			//envMap: reflectionCube,
 			envMapIntensity: settings.envMapIntensity,
+			emissiveColor: new THREE.Color("rgb(255, 255, 255)"),
+			emissiveMap: texture,
 			side: THREE.DoubleSide
 		} );
 		material.map.magFilter = THREE.NearestFilter;
@@ -107,7 +112,7 @@ function init() {
 	// Add the mesh to the scene
 	scene.add( mesh );
 	mesh.rotation.x = 40;
-	
+
 	// Create a PointLight with the color white (0xffffff), intensity of 10, and distance of 10
 	lightsource1 = new THREE.PointLight( 0xffffff);
 	lightsource2 = new THREE.PointLight( 0xffffff);
@@ -174,4 +179,5 @@ animate();
 </script>
 <canvas width="754" height="755" style="width: 754px; height: 755px;"></canvas>
 </body>
+
 </html>
