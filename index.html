@@ -76,13 +76,16 @@
 					category: "Clouds",
 				}
 
-				gui.add( obj, 'category', ["Clouds", "CreatureAssets", "Fabric", "Food", "LumberWood", "Metals", "Misc", "Nature", "Plastics", "Stone"] ).onChange( value => {
+				gui.add( obj, 'category', options ).onChange( value => {
 					folder = value;
 					//texture = new THREE.TextureLoader().load( folder+"_LiveNormal/"+ textureName+ "_Albedo.png" );
 					//mesh.material = new THREE.MeshBasicMaterial( { map: texture } );
-					subGui.destroy();
+					subGui.getValue().setValue(['hey', 'yo']);
+
+					
 				});
 				const subGui = gui.addFolder('Texture-Selection');
+				subGui.add(obj, 'category2', options);
 
 			}
 
